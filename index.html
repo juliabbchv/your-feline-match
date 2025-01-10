@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
+    <!-- <script src =./script/API.js defer></script> -->
+    <script src="./src/main.js" type="module" defer></script>
+    <script
+      src="https://kit.fontawesome.com/78fb251e23.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <title>Your perfect feline match</title>
+  </head>
+  <body>
+    <main>
+      <div class="hero-container">
+        <div class="hero">
+          <h1 class="hero-text">
+            Are you looking for a purrfect cat?
+            <h3 class="hero-subheader">
+              😻Your feline match is just a paw-step away
+            </h3>
+          </h1>
+        </div>
+      </div>
+      <div class="test-container" id="display-result">
+        <div class="result-container"></div>
+        <section class="form-wrapper">
+          <form id="form" action="">
+            <div class="form-container">
+              <div class="form-title-wrapper">
+                <h2 class="form-title">
+                  Take this test to find out which cat would be best suited for
+                  you based on their temperament. <br /><span
+                    class="secondary-h2"
+                    >Choose all that apply.</span
+                  >
+                </h2>
+              </div>
+              <div class="input-wrap">
+                <input
+                  class="checkbox"
+                  type="checkbox"
+                  id="playful"
+                  name="choices"
+                  value="playful"
+                />
+                <label for="playful"> Playful </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="social"
+                  name="choices"
+                  value="social"
+                />
+                <label for="social"> Social </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="intelligent"
+                  name="choices"
+                  value="intelligent"
+                />
+                <label for="intelligent"> Intelligent </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="affectionate"
+                  name="choices"
+                  value="affectionate"
+                />
+                <label for="affectionate"> Affectionate </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="gentle"
+                  name="choices"
+                  value="gentle"
+                />
+                <label for="gentle"> Gentle </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="curious"
+                  name="choices"
+                  value="curious"
+                />
+                <label for="curious"> Curious </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="quiet"
+                  name="choices"
+                  value="quiet"
+                />
+                <label for="quiet"> Quiet </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="active"
+                  name="choices"
+                  value="active"
+                />
+                <label for="active"> Active </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="loyal"
+                  name="choices"
+                  value="loyal"
+                />
+                <label for="loyal"> Loyal </label>
+              </div>
+              <div class="input-wrap">
+                <input type="checkbox" id="calm" name="choices" value="calm" />
+                <label for="calm"> Calm </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="lively"
+                  name="choices"
+                  value="lively"
+                />
+                <label for="lively"> Lively </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="friendly"
+                  name="choices"
+                  value="friendly"
+                />
+                <label for="friendly"> Friendly </label>
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="checkbox"
+                  id="independent"
+                  name="choices"
+                  value="independent"
+                />
+                <label for="independent"> Independent </label>
+              </div>
+              <div>
+                <button id="submit-button">Find a cat match</button>
+              </div>
+            </div>
+            <!-- <div>
+              <iframe src="https://lottie.host/embed/6029cf3a-915c-4df3-9a01-70a6f527623d/laclvEUpqP.lottie"></iframe>
+            </div> -->
+          </form>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
