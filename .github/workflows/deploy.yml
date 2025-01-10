@@ -9,10 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
-      VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,6 +23,9 @@ jobs:
 
       - name: Build the project
         run: npm run build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
