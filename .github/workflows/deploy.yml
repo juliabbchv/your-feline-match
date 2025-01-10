@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+      VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,7 +34,3 @@ jobs:
           publish_dir: ./dist
           user_name: "juliabbchv"
           user_email: "julia.bbchv@gmail.com"
-
-  env:
-    VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
-    VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
