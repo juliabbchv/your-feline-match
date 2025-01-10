@@ -1,7 +1,8 @@
 // API setup
 
-// const API_KEY = import.meta.env.VITE_API_KEY;
-// const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_KEY =
+  "live_11AghMBKrLsKoHo0YjEMoAMIuJPZMQTJVQwSheAzqfoGo6lK4EazHUZq1AXlnTOj";
+const BASE_URL = "https://api.thecatapi.com/v1/";
 
 export default class CatApi {
   constructor() {
