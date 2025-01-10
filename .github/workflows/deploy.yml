@@ -27,6 +27,9 @@ jobs:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
           VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
 
+      - name: Debug environment variables
+        run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" && echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -34,6 +37,3 @@ jobs:
           personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           user_name: "juliabbchv"
           user_email: "julia.bbchv@gmail.com"
-        env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
-          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
