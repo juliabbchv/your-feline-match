@@ -24,6 +24,12 @@ main > * {
   }
 }
 
+a {
+  text-decoration: none;
+  color: #95e78a;
+  font-weight: bold;
+}
+
 /* ------------------------------- Hero Styles ------------------------------ */
 .hero-container {
   height: 70vw;
@@ -84,7 +90,6 @@ h1 {
   display: flex;
   flex-direction: column;
   padding-top: 2rem;
-  padding-bottom: 4rem;
 }
 
 .form-title-wrapper {
@@ -101,6 +106,14 @@ h1 {
   font-style: italic;
   font-weight: lighter;
   font-size: 1.25rem;
+}
+
+.form-container {
+  display: flex;
+}
+
+.form-section {
+  flex: 1;
 }
 
 .form-wrapper {
@@ -136,8 +149,11 @@ button:active {
 .input-wrap {
   display: flex;
   border: 0.2px solid #474747;
+  border-radius: 5px;
   align-items: center;
   background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(71, 71, 71, 0.4), 0 8px 16px rgba(71, 71, 71, 0.2);
+  margin: 5px 5px;
 }
 .input-wrap > * {
   margin: 1rem 1rem;
@@ -161,7 +177,7 @@ input:checked {
 input:checked:before {
   content: "";
   position: absolute;
-  left: 3.9px;
+  left: 4px;
   top: 3px;
   width: 20px;
   height: 20px;
@@ -170,9 +186,14 @@ input:checked:before {
   background-position: center;
 }
 
+.btn-wrapper {
+  display: flex;
+}
+
 /* ------------------------------ Match Styles ------------------------------ */
 .result-container {
-  display: none;
+  display: flex;
+  margin: 2rem auto;
 }
 
 .display-result {
@@ -186,7 +207,6 @@ input:checked:before {
     display: grid;
     align-items: stretch;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 1rem;
   }
 }
 

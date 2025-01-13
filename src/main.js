@@ -1,10 +1,18 @@
+// Global variables
+
+const formContainer = document.querySelector(".form-wrapper");
+const resultContainer = document.querySelector(".result-container");
+const testContainer = document.querySelector(".test-container");
+const userInput = document.getElementById("form");
+const inputs = document.querySelectorAll("input");
+const inputWraps = document.querySelectorAll(".input-wrap");
+
 // API setup
 
-const API_KEY =
-  "live_11AghMBKrLsKoHo0YjEMoAMIuJPZMQTJVQwSheAzqfoGo6lK4EazHUZq1AXlnTOj";
-const BASE_URL = "https://api.thecatapi.com/v1/";
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-export default class CatApi {
+class CatApi {
   constructor() {
     this.apiKey = API_KEY;
     this.baseURL = BASE_URL;
@@ -23,66 +31,9 @@ export default class CatApi {
 
 const catApi = new CatApi();
 
-async function allBreeds() {
-  try {
-    const cats = await catApi.getCats();
-    return cats;
-  } catch (error) {
-    console.log("error");
-  }
-}
-
-allBreeds().then((result) => console.log(result));
-
-// Get temperaments as a string
-
-async function catTemperaments() {
-  const temperamentList = [];
-  try {
-    const cats = await catApi.getCats();
-    cats.forEach((cat) => {
-      if (cat.temperament) {
-        temperamentList.push(cat.temperament);
-      }
-    });
-  } catch (error) {
-    console.error("error");
-  }
-
-  const temperamentArray = temperamentList
-    .map((temperament) => temperament.split(" "))
-    .flat();
-
-  return temperamentArray;
-}
-
-// Word frequency count & top 70 words
-
-function wordFrequency(words) {
-  const wordCount = words.reduce((countMap, word) => {
-    countMap[word] = (countMap[word] || 0) + 1;
-    return countMap;
-  }, {});
-
-  const top70Words = Object.entries(wordCount)
-    .sort(([, count1], [, count2]) => count2 - count1)
-    .slice(0, 70);
-
-  return top70Words;
-}
-
-catTemperaments().then((wordsArray) => {
-  const frequentWords = wordFrequency(wordsArray);
-  console.log(frequentWords);
-});
-
 //Function to generate match card
 
 function createMatchCard(match) {
-  const formContainer = document.querySelector(".form-wrapper");
-  const resultContainer = document.querySelector(".result-container");
-  const testContainer = document.querySelector(".test-container");
-
   const matchCard = document.createElement("div");
   const matchTitle = document.createElement("h2");
   const matchImage = document.createElement("img");
@@ -90,6 +41,7 @@ function createMatchCard(match) {
   const matchDescription = document.createElement("p");
   const matchTemperament = document.createElement("p");
   const matchLifeSpan = document.createElement("p");
+  const matchLink = document.createElement("a");
 
   resultContainer.appendChild(matchCard);
   matchCard.appendChild(matchTitle);
@@ -98,6 +50,7 @@ function createMatchCard(match) {
   matchCard.appendChild(matchDescription);
   matchCard.appendChild(matchTemperament);
   matchCard.appendChild(matchLifeSpan);
+  matchCard.appendChild(matchLink);
 
   matchCard.classList.add("result-card");
   matchTitle.classList.add("result-card__title");
@@ -106,6 +59,7 @@ function createMatchCard(match) {
   matchDescription.classList.add("result-card__description");
   matchTemperament.classList.add("result-card__temperament");
   matchLifeSpan.classList.add("result-card__life-span");
+  matchLink.classList.add("result-card__link");
   formContainer.classList.add("form-wrapper__hidden");
   testContainer.classList.add("display-result");
 
@@ -119,16 +73,17 @@ function createMatchCard(match) {
   }`;
   matchTemperament.innerText = `Temperament: ${match.temperament}`;
   matchLifeSpan.innerText = `Life Span: ${match.life_span} years`;
+  matchLink.innerText = `Click here for more information`;
+  matchLink.href = match.vetstreet_url;
 
   return matchCard;
 }
 
 // Generate a cat match based on user input
 
-const userInput = document.getElementById("form");
-
 async function catMatch() {
   const breeds = await catApi.getCats();
+  let bestMatches = [];
 
   userInput.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -138,9 +93,17 @@ async function catMatch() {
       'input[name="choices"]:checked'
     );
 
-    const selectedOptions = Array.from(checkboxes).map(
-      (checkbox) => checkbox.value
+    const selectedOptions = Array.from(checkboxes).map((checkbox) =>
+      checkbox.value.toLowerCase()
     );
+
+    const optionToKeyMap = {
+      "Dog Friendly": "dog_friendly",
+      "Child Friendly": "child_friendly",
+      Grooming: "grooming",
+      "Shedding Level": "shedding_level",
+      Hairless: "hairless",
+    };
 
     const resultDisplay = document.getElementById("display-result");
 
@@ -150,52 +113,47 @@ async function catMatch() {
       return;
     }
 
-    //Find the best match
-    const matches = breeds.map((breed) => {
+    //Find breed matches based on selected options
+
+    breeds.forEach((breed) => {
+      let matchCount = 0;
+
+      selectedOptions.forEach((option) => {
+        const breedKey = optionToKeyMap[option];
+        if (breedKey && breed[breedKey] > 0) {
+          matchCount++;
+        }
+      });
+
       const temperamentArray = breed.temperament
-        ? breed.temperament.split(", ").map((trait) => trait.trim())
+        ? breed.temperament
+            .split(", ")
+            .map((trait) => trait.trim().toLowerCase())
         : [];
 
-      const matchCount = temperamentArray.filter((trait) =>
-        selectedOptions.some(
-          (option) => option.trim().toLowerCase() === trait.trim().toLowerCase()
-        )
-      ).length;
+      selectedOptions.forEach((option) => {
+        if (temperamentArray.includes(option.trim().toLowerCase())) {
+          matchCount++;
+        }
+      });
 
-      return { ...breed, matchCount };
+      // Only include breeds that match at least one criterion
+      if (matchCount > 0) {
+        bestMatches.push({ ...breed, matchCount });
+      }
     });
 
-    //Sort breeds by match count
-
-    const sortedMatches = matches.sort((a, b) => b.matchCount - a.matchCount);
-
-    const maxMatchCount = sortedMatches[0].matchCount;
-    const bestMatches = sortedMatches.filter(
-      (match) => match.matchCount === maxMatchCount
-    );
-
-    // Select top 6 random best matches
-
-    function shuffle(array) {
-      const shuffledArray = array.sort(() => Math.random() - 0.5);
-      return shuffledArray.slice(0, 6);
+    if (bestMatches.length === 0) {
+      resultDisplay.innerHTML = `<h2 class="warning">No matching breeds found. Try adjusting your preferences.</h2>`;
+      return;
     }
-
-    let randomBestMatches = shuffle(bestMatches);
-    if (randomBestMatches.length < 6) {
-      const remainingMatches = sortedMatches.filter(
-        (match) => !bestMatches.includes(match)
-      );
-      const additionalMatches = shuffle(remainingMatches).slice(
-        0,
-        6 - randomBestMatches.length
-      );
-      randomBestMatches = randomBestMatches.concat(additionalMatches);
-    }
-
     //Display match card
 
-    randomBestMatches.forEach((match) => {
+    console.log(bestMatches);
+
+    const top6Matches = bestMatches.splice(0, 6);
+
+    top6Matches.forEach((match) => {
       const matchCard = createMatchCard(match);
       resultDisplay.appendChild(matchCard);
     });
@@ -203,3 +161,25 @@ async function catMatch() {
 }
 
 catMatch();
+
+// Add event listener
+
+inputs.forEach((input, index) => {
+  input.addEventListener("click", () => {
+    if (input.checked) {
+      inputWraps[index].style.backgroundColor = "#ccc9cd";
+    } else {
+      inputWraps[index].style.backgroundColor = "";
+    }
+  });
+});
+
+userInput.addEventListener("submit", () => {
+  const returnBtn = document.createElement("button");
+  returnBtn.innerText = `Find another match`;
+  returnBtn.classList.add("return-btn");
+  returnBtn.addEventListener("click", () => {
+    window.location.href = "../index.html";
+  });
+  resultContainer.appendChild(returnBtn);
+});
