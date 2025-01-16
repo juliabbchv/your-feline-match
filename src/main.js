@@ -97,14 +97,6 @@ async function catMatch() {
       checkbox.value.toLowerCase()
     );
 
-    const optionToKeyMap = {
-      "Dog Friendly": "dog_friendly",
-      "Child Friendly": "child_friendly",
-      Grooming: "grooming",
-      "Shedding Level": "shedding_level",
-      Hairless: "hairless",
-    };
-
     const resultDisplay = document.getElementById("display-result");
 
     if (selectedOptions.length === 0) {
@@ -117,13 +109,6 @@ async function catMatch() {
 
     breeds.forEach((breed) => {
       let matchCount = 0;
-
-      selectedOptions.forEach((option) => {
-        const breedKey = optionToKeyMap[option];
-        if (breedKey && breed[breedKey] > 0) {
-          matchCount++;
-        }
-      });
 
       const temperamentArray = breed.temperament
         ? breed.temperament
