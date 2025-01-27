@@ -136,7 +136,9 @@ async function catMatch() {
 
     console.log(bestMatches);
 
-    const top6Matches = bestMatches.splice(0, 6);
+    const top6Matches = bestMatches
+      .sort(() => Math.random() - 0.5)
+      .splice(0, 9);
 
     top6Matches.forEach((match) => {
       const matchCard = createMatchCard(match);
